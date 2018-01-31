@@ -1,9 +1,57 @@
+package\_links.R
+================
+amanda
+Wed Jan 31 14:06:09 2018
 
-
-```r
+``` r
 library(tidyverse)
+```
+
+    ## Loading tidyverse: ggplot2
+    ## Loading tidyverse: tibble
+    ## Loading tidyverse: tidyr
+    ## Loading tidyverse: readr
+    ## Loading tidyverse: purrr
+    ## Loading tidyverse: dplyr
+
+    ## Conflicts with tidy packages ----------------------------------------------
+
+    ## filter(): dplyr, stats
+    ## lag():    dplyr, stats
+
+``` r
 library(stringr)
 library(igraph)
+```
+
+    ## 
+    ## Attaching package: 'igraph'
+
+    ## The following objects are masked from 'package:dplyr':
+    ## 
+    ##     as_data_frame, groups, union
+
+    ## The following objects are masked from 'package:purrr':
+    ## 
+    ##     compose, simplify
+
+    ## The following object is masked from 'package:tidyr':
+    ## 
+    ##     crossing
+
+    ## The following object is masked from 'package:tibble':
+    ## 
+    ##     as_data_frame
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     decompose, spectrum
+
+    ## The following object is masked from 'package:base':
+    ## 
+    ##     union
+
+``` r
 library(ggraph)
 
 # Tibble of installed packages
@@ -13,35 +61,33 @@ inst_packages <- installed.packages() %>% as_tibble()
 inst_packages$LinkingTo[1:50]
 ```
 
-```
-##  [1] NA                                NA                               
-##  [3] NA                                NA                               
-##  [5] NA                                "Rcpp"                           
-##  [7] NA                                NA                               
-##  [9] NA                                NA                               
-## [11] NA                                NA                               
-## [13] NA                                NA                               
-## [15] NA                                NA                               
-## [17] NA                                NA                               
-## [19] NA                                NA                               
-## [21] NA                                NA                               
-## [23] NA                                NA                               
-## [25] NA                                NA                               
-## [27] NA                                NA                               
-## [29] NA                                NA                               
-## [31] NA                                "Rcpp, plogr"                    
-## [33] NA                                NA                               
-## [35] NA                                NA                               
-## [37] "BH (>= 1.15.0-2)"                "BH (>= 1.15.0-2)"               
-## [39] NA                                NA                               
-## [41] NA                                "Boom (>= 0.7), BH (>= 1.15.0-2)"
-## [43] NA                                NA                               
-## [45] NA                                NA                               
-## [47] NA                                NA                               
-## [49] NA                                NA
-```
+    ##  [1] NA                                NA                               
+    ##  [3] NA                                NA                               
+    ##  [5] NA                                "Rcpp"                           
+    ##  [7] NA                                NA                               
+    ##  [9] NA                                NA                               
+    ## [11] NA                                NA                               
+    ## [13] NA                                NA                               
+    ## [15] NA                                NA                               
+    ## [17] NA                                NA                               
+    ## [19] NA                                NA                               
+    ## [21] NA                                NA                               
+    ## [23] NA                                NA                               
+    ## [25] NA                                NA                               
+    ## [27] NA                                NA                               
+    ## [29] NA                                NA                               
+    ## [31] NA                                "Rcpp, plogr"                    
+    ## [33] NA                                NA                               
+    ## [35] NA                                NA                               
+    ## [37] "BH (>= 1.15.0-2)"                "BH (>= 1.15.0-2)"               
+    ## [39] NA                                NA                               
+    ## [41] NA                                "Boom (>= 0.7), BH (>= 1.15.0-2)"
+    ## [43] NA                                NA                               
+    ## [45] NA                                NA                               
+    ## [47] NA                                NA                               
+    ## [49] NA                                NA
 
-```r
+``` r
 # For now, take just the first link and remove trailing commas
 inst_packages <- inst_packages %>%
   mutate(
@@ -66,5 +112,4 @@ link_graph <- ggraph::ggraph(package_links, layout = "fr") +
 link_graph
 ```
 
-![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1-1.png)
-
+![](package_links_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-1-1.png)

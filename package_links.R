@@ -1,3 +1,8 @@
+#' ---
+#' output: github_document
+#' ---
+
+
 library(tidyverse)
 library(stringr)
 library(igraph)
