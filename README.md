@@ -1,4 +1,5 @@
 # explore-libraries
 
 
-Foo
+foo
+bar
