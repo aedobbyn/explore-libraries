@@ -9,29 +9,35 @@ read_url <- function(url) {
   page <- read_html(url)
 }
 
-lobby_url <- read_url("https://gitter.im/what-they-forgot/Lobby/~chat#initial")
-  
-get_recipe_content <- function(page) {
-  recipe <- page %>% 
-    html_nodes(".checkList__line") %>% 
-    html_text() %>% 
-    str_replace_all("ADVERTISEMENT", "") %>% 
-    str_replace_all("\n", "") %>% 
-    str_replace_all("\r", "") %>% 
-    str_replace_all("Add all ingredients to list", "")
-  return(recipe)
-}
-
-lobby_url %>% html_nodes(".chat-item__details") %>% html_table()
-lobby_url %>% html_nodes(".div.chat-item__text.js-chat-item-text") %>% html_text()
-lobby_url %>% html_nodes(".js-chat-item-text") %>% html_text()
-
-
+## Our course homepage
 # url <- read_url("https://github.com/jennybc/what-they-forgot")
 # text <- url %>% html_nodes(".entry-content") %>% html_text()
 
-text_tidied <- text %>% as_tibble() %>% unnest_tokens(words, value)
 
-text_tidied_counts <- text_tidied %>% count(words)
+# View source -> find this url 
+lobby_url <- read_url("https://gitter.im/what-they-forgot/Lobby/~chat")
+  
+text <- lobby_url %>% html_nodes(".js-chat-item-text") %>% html_text()
+
+text_tidied <- text %>% as_tibble() %>% 
+  unnest_tokens(word, value) %>% 
+  anti_join(stop_words) %>%       # remove stopwords
+  filter(! grepl("\\d+", word))   # remove numbers
+
+# Add counts
+text_tidied_counts <- text_tidied %>% count(word, sort = TRUE)
 
 text_tidied_counts %>% bind_tf_idf(words, text_tidied_counts, n)
+
+
+names <- lobby_url %>% html_nodes(".js-chat-item-from") %>% html_text()
+
+library(testthat)
+expect_equal(length(names), length(text))
+
+handles <- names %>% str_extract_all("@[a-zA-Z]+") %>% as_vector()
+
+names[which(handles %in% names)]
+
+
+
